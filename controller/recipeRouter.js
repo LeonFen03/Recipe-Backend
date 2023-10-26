@@ -5,7 +5,6 @@ const recipesDB = require('../model/recipes');
 const seedRecipes = require('../seeds/recipeSeeds.js');
 const bodyParser = require('body-parser');
 recipeRouter.use(express.json());
-
 recipeRouter.use(express.json())
 recipeRouter.use(express.urlencoded({ extended: true }))
 recipeRouter.use(bodyParser.json());

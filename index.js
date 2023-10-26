@@ -11,6 +11,10 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
+const path = require('path');
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+
 app.use('/recipes', recipeRouter);
 
 
