@@ -1,15 +1,9 @@
-const mongoose = require('mongoose');
 const recipesDB = require('../model/recipes')
-require('dotenv').config()
-
+const mongoose = require('mongoose')
 // Will put seed data into your localdatabase
 
 
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
- })
-  
+// Insert all seed data in this array utilizing this format
 
  const seedRecipes =  [
     { id: new mongoose.Types.ObjectId(), image:'', name: 'Spaghetti Bolognese', instructions: 'Cook the pasta. Sauté onions and garlic, add ground beef, tomatoes, and spices. Simmer and serve over pasta.' },
@@ -38,12 +32,5 @@ mongoose.connect(process.env.MONGO_URI, {
     { id: new mongoose.Types.ObjectId(), image:'', name: 'Pasta Primavera', instructions: 'Cook pasta, sauté assorted vegetables, mix with a light sauce and pasta.' },
     { id: new mongoose.Types.ObjectId(), image:'', name: 'Shrimp Scampi', instructions: 'Sauté shrimp in garlic butter, add lemon juice and parsley, serve over pasta.' },
   ];
-recipesDB.create(seedRecipes)
-.then(() => {
-    console.log('Success!');
-    process.exit()
-})
-.catch(err => {
-    console.log('Failure!', err)
-    process.exit()
-})
+
+module.exports = seedRecipes;
