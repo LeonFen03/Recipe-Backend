@@ -3,6 +3,7 @@ const recipeRouter = express.Router();
 const mongoose = require('mongoose');
 const recipesDB = require('../model/recipes');
 const seedRecipes = require('../seeds/recipeSeeds.js');
+const favoriteRecipeRouter = require('./favoriteRecipeRouter');
 const bodyParser = require('body-parser');
 recipeRouter.use(express.json());
 recipeRouter.use(express.json())
@@ -15,6 +16,7 @@ mongoose.connect(process.env.MONGO_URI, {
     useUnifiedTopology: true
 })
   
+recipeRouter.use('/favorites',favoriteRecipeRouter);
 
 recipeRouter.get('/', (req,res,next) => {
     //** GRAB ALL RECIPES */
@@ -103,9 +105,6 @@ recipeRouter.post('/create', (req,res,next) => {
 
 })
 
-// Missing: We need update functionality for full CRUD functionality, I did it partially
-
-// Make sure to install everything on the package json, and set up mongoose.
 
 
 
