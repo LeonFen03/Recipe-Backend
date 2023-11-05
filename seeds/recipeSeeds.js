@@ -2,9 +2,6 @@ const recipesDB = require('../model/recipes')
 const express = require('express');
 const mongoose = require('mongoose');
 
-// Will put seed data into your localdatabase
-
-
 // Insert all seed data in this array utilizing this format
 
  let seedRecipes = [

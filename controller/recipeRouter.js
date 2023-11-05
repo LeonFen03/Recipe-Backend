@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true, 
     useUnifiedTopology: true
 })
-  
+
 recipeRouter.use('/favorites',favoriteRecipeRouter);
 
 recipeRouter.get('/', (req,res,next) => {
@@ -38,6 +38,10 @@ recipeRouter.get('/seeds', (req,res,next) => {
         console.log('Successful!');
         res.redirect('/recipes');
     })
+    .catch((err) => {
+        console.log('Error clear')
+        res.redirect('/recipes');
+    })
     
 });
 
@@ -50,7 +54,9 @@ recipeRouter.get('/clear', (req,res,next) => {
         console.log('Successfully Deleted All Recipes!');
         res.redirect('/recipes');
     })
-    
+    .catch((err) => {
+        console.log('Error clear')
+    })
 });
 
 
@@ -59,7 +65,7 @@ recipeRouter.get('/:id',(req,res,next) => {
     recipesDB.findById(`${recipeID}`)
     .then((recipe) => {
         if (recipe !== null) {
-            res.status(200).send({ recipe, Error:false });
+            res.status(200).send({ recipes:recipe, Error:false });
         } else {
             res.status(404).send({ Error:true });
         }
@@ -70,18 +76,37 @@ recipeRouter.get('/:id',(req,res,next) => {
     })
 
 })
+
+
 // Delete specific recipe
 recipeRouter.delete('/:id', (req,res,next) => {
     const recipeID =  new mongoose.Types.ObjectId(req.params.id);
     recipesDB.findByIdAndDelete(`${recipeID}`)
     .then((recipe) => {
-        res.redirect('/');
+        console.log(recipe)
+        res.redirect('/recipes');
     })
     .catch((recipe) => {
-        res.status(404).send({ message:'not found'})
+        res.status.send({Error:true})
     })
 
 })
+
+//'mongodb://0.0.0.0:27017/recipes'
+recipeRouter.put('/:id', (req,res,next) => {
+    const recipeData = req.body;
+    const { id } = req.params;
+    recipesDB.findByIdAndUpdate(`${id}`,recipeData)
+    .then((recipe) => {
+        res.status(203).send(recipe)
+    })
+    .catch((err) => {
+        console.log(err) 
+        res.status(500).send({ recipeStorage:'Recipe Not Created'});
+    })
+
+})
+
 
 //Create specific recipe
 recipeRouter.post('/create', (req,res,next) => {
@@ -93,8 +118,8 @@ recipeRouter.post('/create', (req,res,next) => {
         _id: id,
         ...recipeData,
     }).then((recipe) => {
-        res.status(200).send({ recipe });
-        console.log(recipe)
+        res.redirect('/recipes')
+
     })
     .catch((err) => {
         console.log(err)
